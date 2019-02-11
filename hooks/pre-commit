@@ -1,0 +1,12 @@
+#!/bin/bash
+
+while read file ; do
+    filename=$(echo $file | sed -E 's/^[[:space:]]*(M|A|AM)[[:space:]]+(.*)/\2/g')
+
+    if [ "$file" != "$filename" ] ; then
+        echo "extra thing" >> $filename
+        git add $filename
+    fi
+done < <(git status --porcelain | grep "\.py$")
+
+exit 0
